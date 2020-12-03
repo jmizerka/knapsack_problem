@@ -2,11 +2,7 @@ import numpy as np
 import random
 # create population function
 def create_pop(number_of_individuals, genes):
-    first_pop = np.zeros((number_of_individuals,genes),dtype = np.int8)
-    for i in range(number_of_individuals):
-        for j in range(genes):
-            if random.randint(0,1) == 1:
-                first_pop[i,j] = 1
+    first_pop = np.random.randint(2, size=(number_of_individuals, genes))
     return first_pop
 # crossover function
 def crossover(population_of_survivors, chance_of_crossing_over):
