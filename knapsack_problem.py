@@ -90,10 +90,11 @@ capacity = int(knapsack_txt[0,0])
 number_of_individuals = 4
 chance_of_crossing_over = 0.9
 chance_of_mutation = 0.02
+previous_best = 0
 
 population = create_pop(number_of_individuals,genes)
 value_weight = calc_knapsack(items,population)
-best_ind,best_val = fitness(value_weight,capacity,population, 8)
+best_ind,best_val = fitness(value_weight,capacity,population, previous_best)
 next_pop = tournament(population,value_weight,capacity)
 
 print(population)
