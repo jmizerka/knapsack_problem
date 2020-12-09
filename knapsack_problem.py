@@ -17,16 +17,20 @@ def calc_knapsack(items,new_population):
     return value_weight
 
 # fitness function
-def fitness(value_weight, capacity, population, last_best):
+def fitness(value_weight, capacity, last_best):
     best_value = 0
-    best_individual = 0
+    best_in_pop = 0
+    evaluation = np.random.randint(1,size= (len(value_weight),1))
     for i in range(len(value_weight)):
-        if value_weight[i][0] > best_value and value_weight[i][1] <= capacity:
-            best_individual = i
-            best_value = value_weight[i][0]
-        if last_best < best_individual:
-            last_best = best_individual
-    return best_individual,best_value
+        if value_weight[i][0] > 0 and value_weight[i][1] <= capacity:
+            evaluation[i] = value_weight[i][0]
+        if evaluation[i]> last_best:
+            last_best = evaluation[i]
+            best_in_pop = evaluation[i]
+        else:
+            if evaluation[i] > best_in_pop:
+                best_in_pop = evaluation[i]
+    return evaluation, last_best, best_in_pop
 
 # selection function
 def tournament(population,value_weight,capacity):
@@ -94,9 +98,10 @@ previous_best = 0
 
 population = create_pop(number_of_individuals,genes)
 value_weight = calc_knapsack(items,population)
-best_ind,best_val = fitness(value_weight,capacity,population, previous_best)
+rate,best_of_all, best_in_pop = fitness(value_weight,capacity,8)
 next_pop = tournament(population,value_weight,capacity)
 
 print(population)
 print(value_weight)
+print(rate)
 print(next_pop)
