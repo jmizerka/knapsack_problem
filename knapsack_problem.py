@@ -84,19 +84,16 @@ chance_of_mutation = 0.02
 initial_population = create_pop(number_of_individuals,genes)
 best_of_all = 0
 num_of_iter = 0
-
-while True:
-    value_weight = calc_knapsack(items,initial_population)
+population = initial_population
+for i in range(100):
+    value_weight = calc_knapsack(items,population)
     rate,best_of_all, best_in_pop = fitness(value_weight,capacity,best_of_all)
-    num_of_iter += 1
-    if best_of_all > 17:
-        break
-    next_pop = tournament(initial_population,rate)
+    next_pop = tournament(population,rate)
     crossed_pop = crossover(next_pop.copy(),chance_of_crossing_over)
-    initial_population = mutate(crossed_pop.copy(),chance_of_mutation)
+    population = mutate(crossed_pop.copy(),chance_of_mutation)
     print("Najlepsza wartość w populacji to:",best_in_pop)
 
-print(initial_population)
-print("Program wykonał następującą ilość iteracji:",num_of_iter)
+print("Populacja początkowa: \n",initial_population)
+print("Populacja końcowa: \n",population)
 print("Najlepsza znaleziona wartość to:", best_of_all)
 
