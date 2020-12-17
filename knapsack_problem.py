@@ -23,11 +23,12 @@ def fitness(value_weight, capacity, last_best):
         if value_weight[i][0] > 0 and value_weight[i][1] <= capacity:
             evaluation[i] = value_weight[i][0]
         if evaluation[i]> last_best:
-            last_best = evaluation[i]
-            best_in_pop = evaluation[i]
+            last_best = evaluation[i].item()
+            best_in_pop = evaluation[i].item()
         else:
             if evaluation[i] > best_in_pop:
-                best_in_pop = evaluation[i]
+                best_in_pop = evaluation[i].item()
+
     return evaluation, last_best, best_in_pop
 
 # selection function
@@ -80,16 +81,22 @@ capacity = int(knapsack_txt[0,0])
 number_of_individuals = 4
 chance_of_crossing_over = 0.9
 chance_of_mutation = 0.02
+initial_population = create_pop(number_of_individuals,genes)
+best_of_all = 0
+num_of_iter = 0
 
-population = create_pop(number_of_individuals,genes)
-value_weight = calc_knapsack(items,population)
-rate,best_of_all, best_in_pop = fitness(value_weight,capacity,8)
-next_pop = tournament(population,rate)
-crossed_pop = crossover(next_pop.copy(),chance_of_crossing_over)
-mutated_pop = mutate(crossed_pop.copy(),chance_of_mutation)
-print(population)
-print(value_weight)
-print(rate)
-print(next_pop)
-print(crossed_pop)
-print(mutated_pop)
+while True:
+    value_weight = calc_knapsack(items,initial_population)
+    rate,best_of_all, best_in_pop = fitness(value_weight,capacity,best_of_all)
+    num_of_iter += 1
+    if best_of_all > 17:
+        break
+    next_pop = tournament(initial_population,rate)
+    crossed_pop = crossover(next_pop.copy(),chance_of_crossing_over)
+    initial_population = mutate(crossed_pop.copy(),chance_of_mutation)
+    print("Najlepsza wartość w populacji to:",best_in_pop)
+
+print(initial_population)
+print("Program wykonał następującą ilość iteracji:",num_of_iter)
+print("Najlepsza znaleziona wartość to:", best_of_all)
+
