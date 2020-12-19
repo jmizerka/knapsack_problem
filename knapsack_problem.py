@@ -80,12 +80,12 @@ items = knapsack_txt[1:]
 capacity = int(knapsack_txt[0,0])
 number_of_individuals = 4
 chance_of_crossing_over = 0.9
-chance_of_mutation = 0.02
+chance_of_mutation = 0.1
 initial_population = create_pop(number_of_individuals,genes)
 best_of_all = 0
 num_of_iter = 0
 population = initial_population
-for i in range(100):
+for i in range(250):
     value_weight = calc_knapsack(items,population)
     rate,best_of_all, best_in_pop = fitness(value_weight,capacity,best_of_all)
     next_pop = tournament(population,rate)
