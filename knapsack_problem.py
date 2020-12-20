@@ -33,15 +33,18 @@ def fitness(value_weight, capacity, last_best):
 
 # selection function
 def tournament(population,rate):
-    best = 0
     new_population = np.random.randint(1,size= (len(population),len(population[0])))
     for i in range(len(population)):
         tournament_group = []
         for j in range(int(round(len(population)*0.4,0))):
             random_number = np.random.randint(0,len(population)-1)
-            tournament_group.append(random_number)
-        index = np.where(rate == max(rate[tournament_group]))
-        new_population[i] = population[index[0][0]]
+            if len(tournament_group) > 0:
+                if rate[tournament_group[0]] < rate[random_number]:
+                    tournament_group.pop()
+                    tournament_group.append(random_number)
+            else:
+                tournament_group.append(random_number)
+        new_population[i] = population[tournament_group[0]]
     return new_population
 
 # crossover function
@@ -74,13 +77,13 @@ def mutate(crossed_population,chance_of_mutation):
     return crossed_population
 
 # import knapsack
-knapsack_txt = np.genfromtxt(fname='knapsack_4.txt')
-genes = int(knapsack_txt[0,1])
+knapsack_txt = np.genfromtxt(fname='ks_50_0')
+genes = int(knapsack_txt[0,0])
 items = knapsack_txt[1:]
-capacity = int(knapsack_txt[0,0])
-number_of_individuals = 4
+capacity = int(knapsack_txt[0,1])
+number_of_individuals = 50
 chance_of_crossing_over = 0.9
-chance_of_mutation = 0.1
+chance_of_mutation = 0.02
 initial_population = create_pop(number_of_individuals,genes)
 best_of_all = 0
 num_of_iter = 0
@@ -88,8 +91,8 @@ population = initial_population
 for i in range(250):
     value_weight = calc_knapsack(items,population)
     rate,best_of_all, best_in_pop = fitness(value_weight,capacity,best_of_all)
-    next_pop = tournament(population,rate)
-    crossed_pop = crossover(next_pop.copy(),chance_of_crossing_over)
+    #next_pop = tournament(population.copy(),rate.copy())
+    crossed_pop = crossover(population.copy(),chance_of_crossing_over)
     population = mutate(crossed_pop.copy(),chance_of_mutation)
     print("Najlepsza wartość w populacji to:",best_in_pop)
 
