@@ -92,7 +92,7 @@ for i in range(250):
     value_weight = calc_knapsack(items,population)
     rate,best_of_all, best_in_pop = fitness(value_weight,capacity,best_of_all)
     next_pop = tournament(population.copy(),rate.copy())
-    crossed_pop = crossover(population.copy(),chance_of_crossing_over)
+    crossed_pop = crossover(next_pop.copy(),chance_of_crossing_over)
     population = mutate(crossed_pop.copy(),chance_of_mutation)
     print("Najlepsza wartość w populacji to:",best_in_pop)
 
