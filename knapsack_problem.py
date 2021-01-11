@@ -115,7 +115,7 @@ def visualization(rate):
         if rate[i][0] == 0:
             pygame.draw.line(screen, RED, (ind_x, 800), (ind_x, 200), 10)
         elif rate[i][0] >= 138000:
-            pygame.draw.line(screen, GREEN, (ind_x, 800), (ind_x, end_y-2), 10)
+            pygame.draw.line(screen, GREEN, (ind_x, 800), (ind_x, end_y), 10)
         else:
             pygame.draw.line(screen, WHITE, (ind_x, 800), (ind_x, end_y), 10)
         ind_x += 15
