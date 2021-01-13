@@ -93,28 +93,35 @@ def info():
                         str(chance_of_crossing_over), True, WHITE)
     info3 = font.render("Chance of mutation: " +
                         str(chance_of_mutation), True, WHITE)
-    info4 = font.render("Best of all individuals: " +
-                        str(best_of_all), True, WHITE)
-    info5 = font.render("Best individual in population: " +
+    info4 = font.render("Best individual in population: " +
                         str(best_in_pop), True, WHITE)
-    info6 = font.render("Press SPACE to start",True,WHITE)
+    info5 = font.render("Best of all individuals: " +
+                        str(best_of_all), True, WHITE)
+    info6 = font.render("Press SPACE to start", True, WHITE)
 
-    screen.blit(info1, (300, 10))
     screen.blit(info2, (50, (10 + info1.get_height())))
     screen.blit(info3, (50, (20 + info1.get_height()*2)))
-    screen.blit(info4, (525, (10 + info1.get_height())))
-    screen.blit(info5, (520, (20 + info1.get_height()*2)))
-    screen.blit(info6,(300, 150))
+    screen.blit(info4, (470, (10 + info1.get_height())))
+    screen.blit(info5, (470, (20 + info1.get_height()*2)))
+    screen.blit(info6, (300, 125))
 
 
 def visualization(rate):
-    pygame.draw.line(screen, YELLOW, (0, 200), (800, 200), 5)
+    pygame.draw.line(screen, YELLOW, (0, 300), (800, 300), 5)
     ind_x = 30
+    info8 = font.render("- rate >= 138000", True, WHITE)
+    info9 = font.render("- 0 < rate < 138000", True, WHITE)
+    info10 = font.render("- 138000 treshold", True, WHITE)
+    screen.blit(info8, (320, 200))
+    screen.blit(info9, (320, 225))
+    screen.blit(info10, (320, 250))
+    pygame.draw.rect(screen, GREEN, (300, 207, 10, 10))
+    pygame.draw.rect(screen, WHITE, (300, 232, 10, 10))
+    pygame.draw.rect(screen, YELLOW, (300, 257, 10, 10))
+
     for i in range(number_of_individuals):
-        end_y = 800 - (rate[i][0] / (140000/600))
-        if rate[i][0] == 0:
-            pygame.draw.line(screen, RED, (ind_x, 800), (ind_x, 200), 10)
-        elif rate[i][0] >= 138000:
+        end_y = 800 - (rate[i][0] / (140000/500))
+        if rate[i][0] >= 138000:
             pygame.draw.line(screen, GREEN, (ind_x, 800), (ind_x, end_y), 10)
         else:
             pygame.draw.line(screen, WHITE, (ind_x, 800), (ind_x, end_y), 10)
@@ -147,7 +154,7 @@ BLACK = (0, 0, 0)
 GREEN = (0, 100, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
-font = pygame.font.Font('Pacifico.ttf', 20)
+font = pygame.font.SysFont('times new roman', 18, WHITE)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Genetic Algorithm")
 info()
