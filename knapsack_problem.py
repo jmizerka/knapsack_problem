@@ -110,7 +110,7 @@ def visualization(rate):
     pygame.draw.line(screen, YELLOW, (0, 300), (800, 300), 5)
     ind_x = 30
     info8 = font.render("- rate >= 138000", True, WHITE)
-    info9 = font.render("- 0 < rate < 138000", True, WHITE)
+    info9 = font.render("- rate < 138000", True, WHITE)
     info10 = font.render("- 138000 treshold", True, WHITE)
     screen.blit(info8, (320, 200))
     screen.blit(info9, (320, 225))
