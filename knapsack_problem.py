@@ -77,7 +77,9 @@ def mutate(crossed_population, chance_of_mutation):
             random_number = np.random.random()
             number_of_genes = len(crossed_population[i])
             if random_number < chance_of_mutation:
-                mutation_index = np.random.randint(0, number_of_genes-1)
+                num_of_mutations = np.random.randint(1,number_of_genes-1)
+                for i in range(num_of_mutations):
+                    mutation_index = np.random.randint(0, number_of_genes-1)
                 if crossed_population[i, mutation_index] == 0:
                     crossed_population[i, mutation_index] = 1
                 else:
