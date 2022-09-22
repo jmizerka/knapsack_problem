@@ -1,4 +1,4 @@
-# knapsack_problem
+# Knapsack Problem
 
 # Description
 
