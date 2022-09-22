@@ -4,18 +4,18 @@ import pygame
 
 # create population function
 def create_pop(number_of_individuals, genes):
-    first_pop = np.random.randint(2, size=(number_of_individuals, genes))
+    first_pop = np.random.randint(2, size=(number_of_individuals, genes))  # 0 - item not taken 1 - item taken
     return first_pop
 
 
 # calculate weights and values
-def calc_knapsack(items, new_population):
-    value_weight = np.random.randint(1, size=(len(new_population), 2))
+def calc_knapsack(items, new_population): 
+    value_weight = np.random.randint(1, size=(len(new_population), 2)) # an array to store values and weights 
     for i in range(len(new_population)):
         for j in range(len(new_population[0])):
-            if new_population[i][j] == 1:
-                value_weight[i][0] += items[j][0]
-                value_weight[i][1] += items[j][1]
+            if new_population[i][j] == 1: # if an item at the position is taken then adds value and weght 
+                value_weight[i][0] += items[j][0]  
+                value_weight[i][1] += items[j][1] 
     return value_weight
 
 
@@ -23,15 +23,15 @@ def calc_knapsack(items, new_population):
 def fitness(value_weight, capacity, last_best):
     best_value = 0
     best_in_pop = 0
-    evaluation = np.random.randint(1, size=(len(value_weight), 1))
+    evaluation = np.random.randint(1, size=(len(value_weight), 1)) # an array to store fitness values 
     for i in range(len(value_weight)):
-        if value_weight[i][0] > 0 and value_weight[i][1] <= capacity:
-            evaluation[i] = value_weight[i][0]
-        if evaluation[i] > last_best:
-            last_best = evaluation[i].item()
+        if value_weight[i][0] > 0 and value_weight[i][1] <= capacity: # if value > 0 and weight <= capacity then score = value
+            evaluation[i] = value_weight[i][0] 
+        if evaluation[i] > last_best: # if score is better than the last best score overrides last best and best in population
+            last_best = evaluation[i].item() 
             best_in_pop = evaluation[i].item()
         else:
-            if evaluation[i] > best_in_pop:
+            if evaluation[i] > best_in_pop: # if score is better than best in population overrides the best
                 best_in_pop = evaluation[i].item()
 
     return evaluation, last_best, best_in_pop
@@ -39,31 +39,31 @@ def fitness(value_weight, capacity, last_best):
 
 # selection function
 def tournament(population, rate):
-    new_pop = np.random.randint(1, size=(len(population), len(population[0])))
+    new_pop = np.random.randint(1, size=(len(population), len(population[0]))) # an array to store winning population 
     for i in range(len(population)):
         tournament_group = []
-        for j in range(int(round(len(population)*0.4, 0))):
+        for j in range(int(round(len(population)*0.4, 0))): # 40% of individuals enter the tournament selection
             random_number = np.random.randint(0, len(population)-1)
             if len(tournament_group) > 0:
-                if rate[tournament_group[0]] < rate[random_number]:
+                if rate[tournament_group[0]] < rate[random_number]: # determines winning individual in a tournament group
                     tournament_group.pop()
                     tournament_group.append(random_number)
             else:
                 tournament_group.append(random_number)
-        new_pop[i] = population[tournament_group[0]]
+        new_pop[i] = population[tournament_group[0]] # adds winning individual to new population
     return new_pop
 
 
 # crossover function
 def crossover(pop_of_winners, chance_of_crossing_over):
     list_of_individuals = [i for i in range(len(pop_of_winners))]
-    for i in range(int(len(pop_of_winners)/2)):
+    for i in range(int(len(pop_of_winners)/2)): # randomly chooses individuals for crossing
         par1 = np.random.choice(list_of_individuals)
         list_of_individuals.remove(par1)
         par2 = np.random.choice(list_of_individuals)
         list_of_individuals.remove(par2)
         random_number = np.random.random()
-        if random_number < chance_of_crossing_over:
+        if random_number < chance_of_crossing_over: # if chance of crossing is higher than drawn number then the next number is drawn to choose place of crossing 
             cross_pt = np.random.randint(1, len(pop_of_winners)-1)
             tmp = pop_of_winners[par1].copy()
             pop_of_winners[par1][cross_pt:] = pop_of_winners[par2][cross_pt:]
@@ -76,18 +76,18 @@ def mutate(crossed_population, chance_of_mutation):
     for i in range(len(crossed_population)):
             random_number = np.random.random()
             number_of_genes = len(crossed_population[i])
-            if random_number < chance_of_mutation:
-                num_of_mutations = np.random.randint(1,number_of_genes-1)
+            if random_number < chance_of_mutation: # if the chance of mutation is higher than random number, then mutation occurs (change to the opposite sign) 
+                num_of_mutations = np.random.randint(1,number_of_genes-1) # number of mutations to happen
                 for i in range(num_of_mutations):
-                    mutation_index = np.random.randint(0, number_of_genes-1)
-                if crossed_population[i, mutation_index] == 0:
+                    mutation_index = np.random.randint(0, number_of_genes-1) # place of mutation 
+                if crossed_population[i, mutation_index] == 0: 
                     crossed_population[i, mutation_index] = 1
                 else:
                     crossed_population[i, mutation_index] = 0
     return crossed_population
 
 
-def info():
+def info(): 
     screen.fill(BLACK)
     info1 = font.render("Number of individuals: " + str(number_of_individuals),
                         True, WHITE)
@@ -133,7 +133,7 @@ def visualization(rate):
 
 
 # import knapsack
-knapsack_txt = np.genfromtxt(fname='ks_50_0')
+knapsack_txt = np.genfromtxt(fname='random_knapsack')
 genes = int(knapsack_txt[0, 0])
 items = knapsack_txt[1:]
 capacity = int(knapsack_txt[0, 1])
@@ -178,7 +178,7 @@ while True:
                     crossed_pop = crossover(next_pop.copy(),
                                             chance_of_crossing_over)
                     population = mutate(crossed_pop.copy(), chance_of_mutation)
-                    print("Najlepszy w populacji to: ", best_in_pop)
+                    print("The best in population: ", best_in_pop)
                     info()
                     visualization(rate)
                     pygame.display.flip()
